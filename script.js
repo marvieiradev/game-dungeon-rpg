@@ -330,7 +330,7 @@ function updateUI() {
   playerDamageEl.textContent = player.damageBonus;
   playerGoldEl.textContent = player.gold;
   potionCountEl.textContent = player.potions;
-  roomNumberEl.textContent = `SALA ${player.currentRoom}`;
+  //roomNumberEl.textContent = `SALA ${player.currentRoom}`;
   if (currentMonster) {
     monsterNameEl.style.opacity = 1;
     monsterNameEl.textContent = currentMonster.name;
