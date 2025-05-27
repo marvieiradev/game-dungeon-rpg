@@ -1,0 +1,429 @@
+/* Importando fonte pixel art */
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+/* Estilos gerais */
+body {
+  font-family: "Press Start 2P", cursive;
+  background-color: #000;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+}
+
+.screen {
+  max-width: 600px;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  text-shadow: 3px 3px 0px #222;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  text-shadow: 2px 2px 0px #222;
+}
+
+/* Botões */
+.btn {
+  font-family: "Press Start 2P", cursive;
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+  color: white;
+}
+
+.btn-menu {
+  background-color: #000000;
+  border: 3px solid #ffffff;
+  width: 80%;
+  padding: 15px;
+  margin: 10px auto;
+  display: block;
+}
+
+.btn-menu:hover {
+  background-color: #333;
+  transform: scale(1.05);
+}
+
+.btn-action {
+  background-color: #000000;
+  border: 3px solid #ffffff;
+}
+
+.btn-action:hover {
+  background-color: #333;
+  transform: scale(1.05);
+}
+
+.btn-upgrade {
+  background-color: #000000;
+  border: 3px solid #9966cc;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.btn-upgrade:hover {
+  background-color: #9966cc;
+  transform: scale(1.02);
+}
+
+.btn-upgrade:disabled {
+  background-color: #333;
+  border: 3px solid #666;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.btn-upgrade:disabled:hover {
+  transform: none;
+}
+
+.btn-small {
+  margin-top: 40px;
+  font-size: 0.6rem;
+  padding: 8px;
+  background-color: #000000;
+  border: 3px solid #cc0000;
+}
+
+.btn-small:hover {
+  background-color: #cc0000;
+  transform: scale(1.05);
+}
+
+#btn-potion {
+  border: 2px solid white;
+  margin: 0;
+  font-size: 0.6rem;
+  padding: 5px 15px;
+}
+
+/* Menu */
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.versao {
+  font-size: 0.7rem;
+  color: #ffcc00;
+  margin-top: 30px;
+}
+
+/* História */
+.story-content {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border: 3px solid #333;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  font-size: 0.8rem;
+}
+
+/* Jogo */
+.status-bar {
+  display: flex;
+  justify-content: space-around;
+  background-color: #111;
+  padding: 10px;
+  border: 3px solid #333;
+  margin-bottom: 10px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.status-item i {
+  margin-right: 5px;
+  color: #ffcc00;
+}
+
+.status-item img {
+  height: 15px;
+  margin-right: 5px;
+}
+
+.game-area {
+  background-color: #000;
+  padding: 10px;
+  border: 3px solid #333;
+  margin-bottom: 10px;
+}
+
+.monster-name {
+  font-size: 0.7rem;
+  margin-bottom: 40px;
+  text-shadow: 2px 2px 0px #000;
+  background-color: #000;
+  padding: 5px 10px;
+}
+
+.room-container {
+  position: relative;
+  background-color: #444;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  background-image: url("images/wall.webp");
+  background-size: cover;
+  background-position: center;
+}
+
+.room-element {
+  width: 150px;
+  height: 150px;
+  background-color: transparent;
+}
+
+.room-element.monster {
+  background-color: transparent;
+}
+
+.room-element.boss {
+  background-color: transparent;
+  width: 200px;
+  height: 150px;
+}
+
+.room-element.chest {
+  background-color: transparent;
+}
+
+.room-element.trap {
+  background-color: transparent;
+}
+
+.room-element.safe {
+  background-color: transparent;
+}
+
+.room-element.corpse {
+  background-color: #ffffff;
+}
+
+.room-number {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 0.5rem;
+  color: #fff;
+  text-shadow: 2px 2px 0px #000;
+  z-index: 10;
+}
+
+.log-area {
+  background-color: #000;
+  color: #fff;
+  padding: 10px;
+  border: 3px solid #333;
+  min-height: 50px;
+  font-size: 0.8rem;
+  text-align: center;
+  line-height: 1.5;
+}
+
+#orientation {
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+
+.action-buttons,
+.explore-buttons,
+.special-action-container,
+.safe-room-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 15px;
+}
+
+.action-container {
+  height: 80px;
+}
+
+.inventory {
+  background-color: #111;
+  border: 3px solid #333;
+  padding: 5px 0px;
+  margin-top: 10px;
+}
+
+.inventory-title {
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+  margin-top: 5px;
+  color: #ffcc00;
+}
+
+.inventory-content {
+  display: flex;
+  align-items: center;
+  font-size: 0.6rem;
+}
+
+.item-container {
+  border: 2px solid #333;
+  padding: 5px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 5px;
+  width: 50%;
+  height: 60px;
+}
+
+.inventory img {
+  width: 40px;
+  height: 40px;
+}
+
+.action-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 225px;
+}
+
+/* Game Over e Créditos */
+.credits-content,
+.about-content,
+.instructions-content,
+.game-over-content {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border: 3px solid #333;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+/* Modal de Fortalecimento */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #000;
+  border: 5px solid #663399;
+  padding: 20px;
+  max-width: 500px;
+  width: 90%;
+}
+
+#erase-modal .modal-content {
+  background-color: #000;
+  border: 5px solid #d10000;
+  padding: 20px;
+  max-width: 500px;
+  width: 80%;
+  line-height: 1.5;
+}
+
+#erase-modal h2 {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+#erase-modal p {
+  font-size: 0.8rem;
+  margin-bottom: 20px;
+}
+
+.yes-no-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+#ok-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+#btn-yes,
+#btn-erase-yes {
+  background-color: #000;
+  border: 3px solid #d80000;
+}
+#btn-no,
+#btn-erase-no,
+#btn-ok {
+  background-color: #000;
+  border: 3px solid #ffffff;
+}
+
+.strengthen-options {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .btn {
+    font-size: 0.7rem;
+    padding: 8px 15px;
+  }
+
+  .btn-small {
+    font-size: 0.5rem;
+  }
+
+  .room-container {
+    height: 225px;
+  }
+
+  .status-item,
+  .log-area,
+  .story-content,
+  .credits-content,
+  .about-content,
+  .instructions-content {
+    font-size: 0.7rem;
+  }
+
+  .inventory img {
+    width: 30px;
+    height: 30px;
+  }
+}

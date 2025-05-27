@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RPG de Turnos - Pixel Edition V3</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Tela de Menu -->
+    <div id="menu-screen" class="screen">
+      <h1>DUNGEON RPG</h1>
+      <img src="ui/skull.png" alt="" width="50px" />
+      <div class="menu-buttons">
+        <button id="btn-start" class="btn btn-menu">INICIAR</button>
+        <button id="btn-continue" class="btn btn-menu" disabled>
+          CONTINUAR
+        </button>
+        <button id="btn-about" class="btn btn-menu">SOBRE O JOGO</button>
+        <button id="btn-instructions" class="btn btn-menu">INSTRUÇÕES</button>
+        <button id="btn-delete-data" class="btn btn-menu btn-small">
+          APAGAR DADOS
+        </button>
+        <p class="versao">Versão 1.0</p>
+      </div>
+    </div>
+
+    <!-- Tela de História -->
+    <div id="story-screen" class="screen" style="display: none">
+      <div class="story-content">
+        <p>
+          Sua vila, antes vibrante, agora jazia dilacerada pela violência e
+          morte dos invasores. Você lutou.
+        </p>
+
+        <p>
+          A derrota foi amarga, a dor dilacerante... Ferido e capturado, foi
+          jogado em uma masmorra escura, um lugar destinado a ser seu túmulo.
+        </p>
+
+        <p>
+          Acordando em meio à dor e confusão, seus olhos encontraram uma pequena
+          fresta na parede. Sem outra escolha, você se arrastou em direção
+          àquela tênue promessa de fuga, determinado a atravessar.
+        </p>
+      </div>
+      <button id="btn-start-game" class="btn btn-action">
+        COMEÇAR AVENTURA
+      </button>
+    </div>
+
+    <!-- Tela de Jogo -->
+    <div id="game-screen" class="screen" style="display: none">
+      <div class="status-bar">
+        <div class="status-item">
+          <img src="ui/heart.svg" alt="" /> <span id="player-hp">20</span>/<span
+            id="player-max-hp"
+            >20</span
+          >
+        </div>
+        <div class="status-item">
+          <img src="ui/shield.svg" alt="" />
+          <span id="player-ac">15</span>
+        </div>
+        <div class="status-item">
+          <img src="ui/sword.svg" alt="" /> +<span id="player-damage">1</span>
+        </div>
+        <div class="status-item">
+          <img src="ui/gold.svg" alt="" /> <span id="player-gold">0</span>
+        </div>
+      </div>
+
+      <div class="game-area">
+        <div class="room-container">
+          <div id="monster-name" class="monster-name"></div>
+          <div id="room-element" class="room-element">
+            <img id="image-monster" src="" alt="" height="150px" />
+          </div>
+          <div id="room-number" class="room-number">SALA 0</div>
+        </div>
+        <div id="log-area" class="log-area">Bem-vindo à dungeon!</div>
+      </div>
+
+      <div class="action-area">
+        <div class="action-container">
+          <p id="orientation"></p>
+          <div id="action-buttons" class="action-buttons" style="display: none">
+            <button id="btn-attack" class="btn btn-action">ATACAR</button>
+            <button id="btn-dodge" class="btn btn-action">DESVIAR</button>
+          </div>
+
+          <div
+            id="explore-buttons"
+            class="explore-buttons"
+            style="display: none"
+          >
+            <button id="btn-left" class="btn btn-action">ESQUERDA</button>
+            <button id="btn-right" class="btn btn-action">DIREITA</button>
+          </div>
+
+          <div
+            id="special-action-container"
+            class="special-action-container"
+            style="display: none"
+          >
+            <button id="special-action-button" class="btn btn-action">
+              AÇÃO ESPECIAL
+            </button>
+          </div>
+
+          <div
+            id="safe-room-buttons"
+            class="safe-room-buttons"
+            style="display: none"
+          >
+            <button id="btn-strengthen" class="btn btn-action">
+              FORTALECER HERÓI
+            </button>
+            <button id="btn-save-continue" class="btn btn-action">
+              SALVAR E CONTINUAR
+            </button>
+          </div>
+        </div>
+
+        <div class="inventory" id="inventory">
+          <div class="inventory-title">INVENTÁRIO</div>
+          <div class="inventory-content">
+            <div class="item-container">
+              <div>
+                <img src="ui/sword.svg" alt="" />
+              </div>
+              <div>
+                <p>ESPADA</p>
+                <p>DANO <span id="damage-bonus">1-10</span></p>
+              </div>
+            </div>
+
+            <div class="item-container">
+              <div>
+                <img src="ui/potion.svg" alt="" />
+              </div>
+              <div>
+                <p>POÇÃO x<span id="potion-count">1</span></p>
+                <button id="btn-potion" class="btn btn-action">USAR</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Fortalecimento -->
+    <div id="strengthen-modal" class="modal" style="display: none">
+      <div class="modal-content">
+        <h2>FORTALECER HERÓI</h2>
+        <p>Escolha um atributo para fortalecer (Custo: 20 ouro)</p>
+        <div class="strengthen-options">
+          <button id="btn-upgrade-attack" class="btn btn-upgrade">
+            AUMENTAR ATAQUE (+1)
+          </button>
+          <button id="btn-upgrade-defense" class="btn btn-upgrade">
+            AUMENTAR DEFESA (+1)
+          </button>
+          <button id="btn-upgrade-hp" class="btn btn-upgrade">
+            AUMENTAR HP (+1)
+          </button>
+          <button id="btn-upgrade-damage" class="btn btn-upgrade">
+            AUMENTAR DANO (+1)
+          </button>
+        </div>
+        <button id="btn-close-modal" class="btn btn-action">CANCELAR</button>
+      </div>
+    </div>
+
+    <!-- Modal Apagar Dados-->
+    <div id="erase-modal" class="modal" style="display: none">
+      <div class="modal-content">
+        <div id="confirm-options">
+          <h2>DESEJA APAGAR DADOS SALVOS?</h2>
+          <p id="message">Todo o progresso será perdido</p>
+          <div class="confirm-buttons">
+            <div class="yes-no-buttons">
+              <button id="btn-yes" class="btn">SIM</button>
+              <button id="btn-no" class="btn">NÃO</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="erase-options" style="display: none">
+          <h2>DESEJA APAGAR DADOS SALVOS?</h2>
+          <p id="message">
+            Tem certeza que deseja apagar todos os dados salvos? Esta ação não
+            pode ser desfeita.
+          </p>
+          <div class="confirm-buttons">
+            <div class="yes-no-buttons">
+              <button id="btn-erase-yes" class="btn">SIM</button>
+              <button id="btn-erase-no" class="btn">NÃO</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="ok-buttons" style="display: none">
+          <p>Dados apagados com sucesso!</p>
+          <button id="btn-ok" class="btn">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tela de Game Over -->
+    <div id="game-over-screen" class="screen" style="display: none">
+      <h1>FIM DE JOGO!</h1>
+      <div class="game-over-content">
+        <p>
+          Você sente uma dor aguda atravessando seu corpo. O sangue escorre
+          lentamente pelo chão, enquanto você cai de joelhos, exausto e
+          derrotado. Você sente a vida escapando de seu corpo.
+        </p>
+        <p>
+          O brilho final de seus olhos se apagou, e com ele, a última chama da
+          esperança que se recusava a morrer. Tudo está perdido.
+        </p>
+        <button id="btn-restart" class="btn btn-action">VOLTAR AO MENU</button>
+      </div>
+    </div>
+
+    <!-- Tela de Créditos (Vitória) -->
+    <div id="credits-screen" class="screen" style="display: none">
+      <h1>VITÓRIA!</h1>
+      <div class="credits-content">
+        <p>
+          Depois de uma longa e sangrenta batalha, você sente uma brisa suave.
+        </p>
+        <p>Você segue em frente e uma luz cegante ofusca seus olhos.</p>
+        <p>Você finalmente consegue ver a luz do dia. Você achou a saída!</p>
+        <p>
+          Agora é chegada a hora de se preparar para uma batalha mais difíl.
+          Salvar sua vila dos invasores.
+        </p>
+      </div>
+      <button id="btn-credits-menu" class="btn btn-action">
+        VOLTAR AO MENU
+      </button>
+    </div>
+
+    <!-- Tela Sobre o Jogo -->
+    <div id="about-screen" class="screen" style="display: none">
+      <h1>SOBRE O JOGO</h1>
+      <div class="about-content">
+        <p>RPG de Turnos é um jogo simples de aventura em estilo pixel art.</p>
+        <p>
+          Explore salas, enfrente monstros, colete tesouros e tente chegar ao
+          final da dungeon.
+        </p>
+        <p>
+          Desenvolvido como um projeto de demonstração de jogabilidade em
+          JavaScript.
+        </p>
+      </div>
+      <button id="btn-about-menu" class="btn btn-action">VOLTAR AO MENU</button>
+    </div>
+
+    <!-- Tela de Instruções -->
+    <div id="instructions-screen" class="screen" style="display: none">
+      <h1>INSTRUÇÕES</h1>
+      <div class="instructions-content">
+        <p>ATACAR: Rola um d20 + bônus de ataque contra a CA do inimigo</p>
+        <p>DESVIAR: Aumenta sua CA temporariamente contra o próximo ataque</p>
+        <p>POÇÃO: Recupera 10 pontos de vida (máximo: vida máxima)</p>
+        <p>ESQUERDA/DIREITA: Avança para a próxima sala</p>
+        <p>
+          Existem salas seguras que permitem salvar o jogo e fortalecer seu
+          herói
+        </p>
+        <p>Derrote o boss na ultima sala e escape da masmorra!</p>
+      </div>
+      <button id="btn-instructions-menu" class="btn btn-action">
+        VOLTAR AO MENU
+      </button>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
