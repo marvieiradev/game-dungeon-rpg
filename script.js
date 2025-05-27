@@ -18,7 +18,7 @@ const ROOM_PROBABILITIES = [
 
 const BOSS_ROOM = 50;
 const SAFE_ROOMS = [15, 30, 45];
-const MESSAGE_DELAY = 200; // 2 segundos entre mensagens
+const MESSAGE_DELAY = 2000; // 2 segundos entre mensagens
 const UPGRADE_COST = 20; // Custo em ouro para melhorar um atributo
 
 // Estado inicial do jogador
