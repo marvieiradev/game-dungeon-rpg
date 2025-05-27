@@ -27,8 +27,8 @@ const playerInitialState = {
   maxHp: 20,
   ac: 15,
   attackBonus: 5,
-  damageBonus: 1,
-  potions: 1,
+  damageBonus: 2,
+  potions: 2,
   gold: 0,
   currentRoom: 0,
   lastRoomTypes: [],
@@ -327,7 +327,7 @@ function updateUI() {
   playerHpEl.textContent = player.hp;
   playerMaxHpEl.textContent = player.maxHp;
   playerAcEl.textContent = player.ac;
-  playerDamageEl.textContent = player.damageBonus;
+  playerDamageEl.textContent = player.attackBonus;
   playerGoldEl.textContent = player.gold;
   potionCountEl.textContent = player.potions;
   //roomNumberEl.textContent = `SALA ${player.currentRoom}`;
@@ -1167,13 +1167,13 @@ function applyLoot(loot) {
 
   // Apply attack bonus
   if (loot.type === "tonico") {
-    player.ac += 1;
+    player.attackBonus += 1;
     addMessage("Achou um tônico! +1 de ataque!");
   } else if (loot.type === "tonico_raro") {
-    player.ac += 2;
+    player.attackBonus += 2;
     addMessage("Achou um tônico raro! +2 de ataque!");
   } else if (loot.type === "tonico_lendario") {
-    player.ac += 3;
+    player.attackBonus += 3;
     addMessage("Achou um tônico lendário! +3 de ataque!");
   }
   // Update UI
