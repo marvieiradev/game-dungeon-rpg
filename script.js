@@ -45,6 +45,7 @@ let messageQueue = [];
 let processingMessages = false;
 let waitingForAction = false;
 let currentRoomData = { number: 0, type: ROOM_TYPES.EMPTY };
+let tempMessage = "";
 
 // --- DOM Elements ---
 // Screens
@@ -153,7 +154,7 @@ const eraseOptions = document.getElementById("erase-options");
 // --- Helper Functions ---
 function addMessage(message) {
   messageQueue.push(message);
-
+  tempMessage = message;
   if (!processingMessages) {
     processMessageQueue();
   }
@@ -415,7 +416,7 @@ function showAppropriateActions() {
         // Após levantar, a armadilha desaparece e a sala é marcada como vazia
         setTimeout(() => {
           imageMonster.src = "";
-        }, 2000);
+        }, MESSAGE_DELAY * 1.5);
         roomElementEl.className = "room-element";
         currentRoomData.type = ROOM_TYPES.EMPTY;
         addMessage("Você está pronto para seguir em frente.");
@@ -542,7 +543,7 @@ function enterRoom(roomNumber) {
   switch (roomType) {
     case ROOM_TYPES.EMPTY:
       if (roomNumber === 0) {
-        logMessage("Você atravessa a fresta. Na sua frente, varios caminhos.");
+        logMessage("Você atravessa a fresta. Na sua frente, há dois caminhos.");
       } else {
         logMessage("Não tem nada neste lugar.");
       }
@@ -659,7 +660,7 @@ function playerAttack() {
     } else if (attackTotal === currentMonster.ac) {
       // Ataque igual à CA - metade do dano
       damageTotal = Math.floor(damageTotal / 2);
-      addMessage(`Raspão! você causa ${damageTotal} de dano ao inimigo.`);
+      addMessage(`De raspão! você causa ${damageTotal} de dano ao inimigo.`);
     } else if (
       attackTotal >=
       currentMonster.ac + Math.ceil(currentMonster.ac * 0.5)
@@ -686,7 +687,9 @@ function playerAttack() {
   }
 
   // Monster's turn
-  monsterTurn();
+  setTimeout(() => {
+    monsterTurn();
+  }, MESSAGE_DELAY * 2);
 }
 
 function playerDodge() {
@@ -746,14 +749,20 @@ function monsterTurn() {
     // Check if player is defeated
     if (player.hp <= 0) {
       player.hp = 0;
-      updateUI();
+      setTimeout(() => {
+        updateUI();
+      }, MESSAGE_DELAY * 2);
       setTimeout(() => {
         gameOver();
-      }, 4000);
+      }, MESSAGE_DELAY * 2);
       return;
     }
   } else {
-    addMessage(`${currentMonster.name} errou!`);
+    if (playerDodging) {
+      addMessage("Você desviou do ataque!");
+    } else {
+      addMessage(`${currentMonster.name} errou!`);
+    }
   }
 
   // Reset dodge status
@@ -761,7 +770,9 @@ function monsterTurn() {
   monsterDodging = false;
 
   // Update UI
-  updateUI();
+  setTimeout(() => {
+    updateUI();
+  }, MESSAGE_DELAY * 2);
 
   // Re-enable combat buttons after a delay
   waitingForAction = true;
@@ -773,11 +784,11 @@ function monsterDefeated() {
     imageMonster.src = "";
     monsterNameEl.textContent = "";
     monsterNameEl.style.opacity = 0;
-  }, 4000);
+  }, MESSAGE_DELAY * 2);
   if (currentMonster.type === "boss") {
     setTimeout(() => {
       victory();
-    }, 4000);
+    }, MESSAGE_DELAY * 2);
     return;
   }
 
@@ -813,6 +824,10 @@ function monsterDefeated() {
   // Allow player to continue exploring
   currentMonster = null;
   waitingForAction = true;
+
+  setTimeout(() => {
+    updateUI();
+  }, MESSAGE_DELAY * 4);
 }
 
 function usePotion() {
@@ -853,7 +868,7 @@ function gameOver() {
   setTimeout(() => {
     imageMonster.src = "";
     showScreen(gameOverScreen);
-  }, 7000);
+  }, MESSAGE_DELAY * 3);
 }
 
 function victory() {
@@ -861,7 +876,7 @@ function victory() {
   // Mostrar tela de créditos
   setTimeout(() => {
     showScreen(creditsScreen);
-  }, 7000);
+  }, MESSAGE_DELAY * 4);
 }
 
 function logMessage(message) {
@@ -890,11 +905,11 @@ function generateMonster(roomNumber) {
   switch (monsterType) {
     case "fraco":
       monsterStats = {
-        hp: Math.floor(Math.random() * 5) + 8, // 8-12 HP
-        maxHp: 12,
-        ac: 12,
-        attackBonus: 3,
-        damageBonus: 1,
+        hp: Math.floor(Math.random() * 3) + 12, // 12-14 HP
+        maxHp: 14,
+        ac: Math.floor(Math.random() * 3) + 12, // 12-14 AC
+        attackBonus: Math.floor(Math.random() * 3) + 2, // 2-4 Attack Bonus
+        damageBonus: Math.floor(Math.random() * 2) + 1, // 1-2 Damage Bonus
       };
 
       // Choose random name and image
@@ -915,9 +930,9 @@ function generateMonster(roomNumber) {
       monsterStats = {
         hp: Math.floor(Math.random() * 10) + 15, // 15-24 HP
         maxHp: 24,
-        ac: 14,
-        attackBonus: 5,
-        damageBonus: 2,
+        ac: Math.floor(Math.random() * 3) + 14, // 14-16 AC
+        attackBonus: Math.floor(Math.random() * 2) + 5, // 5-6 Attack Bonus
+        damageBonus: Math.floor(Math.random() * 2) + 2, // 2-3 Damage Bonus
       };
 
       // Choose random name and image
@@ -937,11 +952,11 @@ function generateMonster(roomNumber) {
 
     case "elite":
       monsterStats = {
-        hp: Math.floor(Math.random() * 15) + 25, // 25-39 HP
-        maxHp: 39,
-        ac: 16,
-        attackBonus: 7,
-        damageBonus: 3,
+        hp: Math.floor(Math.random() * 15) + 26, // 26-40 HP
+        maxHp: 40,
+        ac: Math.floor(Math.random() * 3) + 16, // 16-18 AC
+        attackBonus: Math.floor(Math.random() * 2) + 7, // 7-8 Attack Bonus
+        damageBonus: Math.floor(Math.random() * 2) + 3, // 3-4 Damage Bonus
       };
 
       // Choose random name and image
@@ -980,11 +995,11 @@ function generateBoss() {
   imageMonster.src = `${selectedMonster.image}`;
   return {
     name: selectedMonster.name,
-    hp: 50,
-    maxHp: 50,
+    hp: Math.floor(Math.random() * 2) + 74, // 74-75 HP
+    maxHp: 75,
     ac: 18,
-    attackBonus: 9,
-    damageBonus: 5,
+    attackBonus: Math.floor(Math.random() * 3) + 8, // 8-10 Attack Bonus
+    damageBonus: Math.floor(Math.random() * 3) + 5, // 5-7 Damage Bonus
     type: "boss",
   };
 }
@@ -1018,7 +1033,7 @@ function openChest() {
 
   // Adicionar uma mensagem final para garantir que a fila de mensagens seja processada
 
-  addMessage("Não há mais nada por aqui!");
+  addMessage(tempMessage);
 }
 
 function checkCorpse(roomNumber) {
@@ -1111,11 +1126,12 @@ function generateChestLoot(chestType) {
 function applyLoot(loot) {
   setTimeout(() => {
     imageMonster.src = "";
-  }, 2000);
+  }, MESSAGE_DELAY);
   // Apply gold
   if (loot.ouro) {
     player.gold += loot.ouro;
     addMessage(`Você achou ${loot.ouro} de ouro!`);
+    playerGoldEl.textContent = player.gold;
   }
 
   // Apply potions
@@ -1124,6 +1140,7 @@ function applyLoot(loot) {
     addMessage(
       `Você achou ${loot.amount} ${loot.amount == 1 ? "poção" : "poções"}!`
     );
+    potionCountEl.textContent = player.potions;
   }
 
   // Apply weapon upgrades
@@ -1154,27 +1171,27 @@ function applyLoot(loot) {
   if (loot.type === "elixir") {
     player.maxHp += 5;
     player.hp += 5;
-    addMessage("Achou um exlixir! +5 vida máxima!");
+    addMessage("Achou um exlixir! Sua vida máxima aumenta +5!");
   } else if (loot.type === "elixir_raro") {
     player.maxHp += 10;
     player.hp += 10;
-    addMessage("Achou um exlixir raro! +10 vida máxima!");
+    addMessage("Achou um exlixir potente! Sua vida máxima aumenta +10!");
   } else if (loot.type === "elixir_lendario") {
     player.maxHp += 15;
     player.hp += 15;
-    addMessage("Achou um exlixir lendário! +15 vida máxima!");
+    addMessage("Achou um exlixir especial! Sua vida máxima aumenta +15!");
   }
 
   // Apply attack bonus
   if (loot.type === "tonico") {
     player.attackBonus += 1;
-    addMessage("Achou um tônico! +1 de ataque!");
+    addMessage("Achou um tônico! Seu ataque aumenta +1");
   } else if (loot.type === "tonico_raro") {
     player.attackBonus += 2;
-    addMessage("Achou um tônico raro! +2 de ataque!");
+    addMessage("Achou um tônico potente! Seu ataque aumenta +2");
   } else if (loot.type === "tonico_lendario") {
     player.attackBonus += 3;
-    addMessage("Achou um tônico lendário! +3 de ataque!");
+    addMessage("Achou um tônico especial! Seu ataque aumenta +3");
   }
   // Update UI
   updateUI();
@@ -1190,7 +1207,7 @@ function saveAndContinue() {
   saveGameInSafeRoom();
   setTimeout(() => {
     imageMonster.src = "";
-  }, 2000);
+  }, MESSAGE_DELAY);
   // Após salvar, marcar a sala como vazia para mostrar opções de direção
   currentRoomData.type = ROOM_TYPES.EMPTY;
 
@@ -1235,24 +1252,24 @@ function upgradeAttribute(attribute) {
     case "attack":
       player.attackBonus += 1;
       addMessage(
-        `Ataque aumentado! (${player.attackBonus - 1} → ${player.attackBonus})`
+        `Ataque aumentado! (${player.attackBonus - 1} -> ${player.attackBonus})`
       );
       break;
     case "defense":
       player.ac += 1;
-      addMessage(`Defesa aumentada! (${player.ac - 1} → ${player.ac})`);
+      addMessage(`Defesa aumentada! (${player.ac - 1} -> ${player.ac})`);
       break;
     case "hp":
       player.maxHp += 1;
       player.hp += 1;
       addMessage(
-        `HP máximo aumentado! (${player.maxHp - 1} → ${player.maxHp})`
+        `Vida máxima aumentada! (${player.maxHp - 1} -> ${player.maxHp})`
       );
       break;
     case "damage":
       player.damageBonus += 1;
       addMessage(
-        `Dano aumentado! (${player.damageBonus - 1} → ${player.damageBonus})`
+        `Dano aumentado! (${player.damageBonus - 1} -> ${player.damageBonus})`
       );
       break;
   }
