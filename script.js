@@ -558,7 +558,7 @@ function enterRoom(roomNumber) {
       break;
     case ROOM_TYPES.CHEST:
       imageMonster.src = "images/bau.webp"; // Imagem de baú
-      logMessage("Baú encontrado!");
+      logMessage("Você encontrou um baú!");
       break;
     case ROOM_TYPES.TRAP:
       imageMonster.src = "images/armadilha.webp";
