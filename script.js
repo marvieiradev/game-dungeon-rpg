@@ -1128,9 +1128,9 @@ function applyLoot(loot) {
     imageMonster.src = "";
   }, MESSAGE_DELAY);
   // Apply gold
-  if (loot.ouro) {
+  if (loot.type === "ouro") {
     player.gold += loot.ouro;
-    addMessage(`Você achou ${loot.ouro} de ouro!`);
+    addMessage(`Você achou ${loot.amount} de ouro!`);
     playerGoldEl.textContent = player.gold;
   }
 
